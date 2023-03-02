@@ -1,15 +1,18 @@
+
 #include<stdio.h>
 #include<stdlib.h>
 
-int linearsearch(int *a,int b,int n){
+void linearsearch(int *a,int b,int n){
     int c=0;
     for(int i=0;i<n;i++){
         if(a[i]==b){
-            c=1;
-            break;
-        }
-    }
-    return c;
+            c=i+1;
+            printf("Present at %d",c);
+            exit(0);
+        }}
+    if(c==0)
+        printf("Element not found");
+    
 }
 void main(){
     int *a,n,m,i;
@@ -23,9 +26,6 @@ void main(){
     }
     printf("Enter the element you want to search: ");
     scanf("%d",&m);
-    i=linearsearch(a,m,n);
-    if(i==0)
-        printf("The number is not in the list\n");
-    else
-        printf("The number is in %d position of the the list\n",i+1);
-}
+    linearsearch(a,m,n);
+
+        printf("Element not found");
