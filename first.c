@@ -1,17 +1,17 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<time.h>
 
-void linearsearch(int *a,int b,int n){
+int linearsearch(int *a,int b,int n){
     int c=0;
     for(int i=0;i<n;i++){
         if(a[i]==b){
             c=i+1;
-            printf("Present at %d",c);
-            exit(0);
+            return(c);
+            break;
         }}
-    if(c==0)
-        printf("Element not found");
+    
     
 }
 void main(){
@@ -24,8 +24,13 @@ void main(){
         printf("Enter element %d: ",i+1);
         scanf("%d",&a[i]);
     }
+    clock_t start_t,end_t;
+    double total_t;
     printf("Enter the element you want to search: ");
     scanf("%d",&m);
-    linearsearch(a,m,n);
-
-        printf("Element not found");
+    start_t=clock();
+    printf("Found at %d position",linearsearch(a,m,n));
+    end_t=clock();
+    total_t=(double)(end_t-start_t);
+    printf("\nTotal time: %f",total_t);
+}
