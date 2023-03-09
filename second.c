@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<time.h>
 int c=0;
 int binarysearch(int *a,int m,int n)
 {
@@ -37,11 +38,16 @@ int main()
     }
     printf("Enter the number to be search: ");
     scanf("%d",&m);
+    clock_t start_t,end_t;
+    double total_t;
+    start_t=clock();
 	pos=binarysearch(a,m,n);
     if(c==0)
          printf("The number is not found.\n");
     else
          printf("The number is found at position %d\n",pos+1);
-
+    end_t=clock();
+    total_t=(double)(end_t-start_t);
+    printf("\nTotal time: %f",total_t);
     return 0;
 }
