@@ -1,4 +1,3 @@
-
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
@@ -16,6 +15,7 @@ int linearsearch(int *a,int b,int n){
 }
 void main(){
     int *a,n,m,i;
+    
     printf("Enter the size of the array: ");
     scanf("%d",&n);
     a=(int *)malloc(n*sizeof(int));
@@ -29,8 +29,18 @@ void main(){
     printf("Enter the element you want to search: ");
     scanf("%d",&m);
     start_t=clock();
-    printf("Found at %d position",linearsearch(a,m,n));
+    
+    if(linearsearch(a,m,n)==1){
+        printf("Found at %dst position",linearsearch(a,m,n));
+    } else if(linearsearch(a,m,n)==2) {
+         printf("Found at %dnd position",linearsearch(a,m,n));
+    } else if(linearsearch(a,m,n)==3) {
+         printf("Found at %drd position",linearsearch(a,m,n));
+    } else {
+        printf("Found at %dth position",linearsearch(a,m,n)); // linearsearch(array,search element,size of array)
+    }
+    
     end_t=clock();
     total_t=(double)(end_t-start_t);
-    printf("\nTotal time: %f",total_t);
+    printf("\nTotal time: %.2f seconds",total_t);
 }
