@@ -1,118 +1,97 @@
-/******************************************************************************
+// C program for the above approach
 
-Welcome to GDB Online.
-  GDB online is an online compiler and debugger tool for C, C++, Python, PHP, Ruby,
-  C#, OCaml, VB, Perl, Swift, Prolog, Javascript, Pascal, COBOL, HTML, CSS, JS
-  Code, Compile, Run and Debug online from anywhere in world.
-
-*******************************************************************************/
+#include <stdbool.h>
 #include <stdio.h>
-#include <conio.h>
 
-static int m, n;
-static int c = 0;
-static int count = 0;
-int g[50][50];
-int x[50];
+// Number of vertices in the graph
+#define V 4
 
-void nextValue(int k);
-void GraphColoring(int k);
+void printSolution(int color[]);
 
-void main()
-
+// check if the colored
+// graph is safe or not
+bool isSafe(bool graph[V][V], int color[])
 {
-    int i, j;
-    int temp;
-    printf("\nEnter the number of nodes: ");
-    scanf("%d", &n);
-
-    /*
-     printf("\nIf edge exists then enter 1 else enter 0 \n");
-     for(i=1; i<=n; i++)
-     {
-      x[i]=0;
-      for(j=1; j<=n; j++)
-      {
-       if(i==j)
-            g[i][j]=0;
-       else
-       {
-        printf("%d -> %d: " , i, j);
-        scanf("%d", &temp);
-        g[i][j]=g[j][i]=temp;
-       }
-      }
-     }*/
-
-    printf("\nEnter Adjacency Matrix:\n");
-    for (i = 1; i <= n; i++)
-    {
-        for (j = 1; j <= n; j++)
-        {
-            scanf("%d", &g[i][j]);
-        }
-    }
-    printf("\nPossible Solutions are\n");
-    for (m = 1; m <= n; m++)
-    {
-        if (c == 1)
-        {
-            break;
-        }
-        GraphColoring(1);
-    }
-    printf("\nThe chromatic number is %d", m - 1);
-
-    // in for loop, m gets incremented first and then the condition is checked
-    // so it is m minus 1
-
-    printf("\nThe total number of solutions is %d", count);
-    getch();
+    // check for every edge
+    for (int i = 0; i < V; i++)
+        for (int j = i + 1; j < V; j++)
+            if (graph[i][j] && color[j] == color[i])
+                return false;
+    return true;
 }
 
-void GraphColoring(int k)
+/* This function solves the m Coloring
+problem using recursion. It returns
+false if the m colours cannot be assigned,
+otherwise, return true and prints
+assignments of colours to all vertices.
+Please note that there may be more than
+one solutions, this function prints one
+of the feasible solutions.*/
+bool graphColoring(bool graph[V][V], int m, int i,
+                   int color[V])
 {
-    int i;
-    while (1)
+    // if current index reached end
+    if (i == V)
     {
-        nextValue(k);
-        if (x[k] == 0)
+        // if coloring is safe
+        if (isSafe(graph, color))
         {
-            return;
+            // Print the solution
+            printSolution(color);
+            return true;
         }
-        if (k == n)
-        {
-            c = 1;
-            for (i = 1; i <= n; i++)
-            {
-                printf("%d ", x[i]);
-            }
-            count++;
-            printf("\n");
-        }
-        else
-            GraphColoring(k + 1);
+        return false;
     }
+
+    // Assign each color from 1 to m
+    for (int j = 1; j <= m; j++)
+    {
+        color[i] = j;
+
+        // Recur of the rest vertices
+        if (graphColoring(graph, m, i + 1, color))
+            return true;
+
+        color[i] = 0;
+    }
+
+    return false;
 }
 
-void nextValue(int k)
+/* A utility function to print solution */
+void printSolution(int color[])
 {
-    int j;
-    while (1)
-    {
-        x[k] = (x[k] + 1) % (m + 1);
-        if (x[k] == 0)
-        {
-            return;
-        }
-        for (j = 1; j <= n; j++)
-        {
-            if (g[k][j] == 1 && x[k] == x[j])
-                break;
-        }
-        if (j == (n + 1))
-        {
-            return;
-        }
-    }
+    printf("Solution Exists:"
+           " Following are the assigned colors \n");
+    for (int i = 0; i < V; i++)
+        printf(" %d ", color[i]);
+    printf("\n");
 }
+
+// Driver code
+int main()
+{
+    bool graph[V][V] = {
+        {0, 1, 1, 1},
+        {1, 0, 1, 0},
+        {1, 1, 0, 1},
+        {1, 0, 1, 0},
+    };
+    int m = 3; // Number of colors
+
+    // Initialize all color values as 0.
+    // This initialization is needed
+    // correct functioning of isSafe()
+    int color[V];
+    for (int i = 0; i < V; i++)
+        color[i] = 0;
+
+    // Function call
+    if (!graphColoring(graph, m, 0, color))
+        printf("Solution does not exist");
+
+    return 0;
+}
+
+// OUTPUT : Solution Exists : Following are the assigned colors 1 2 3 2
